@@ -2,14 +2,12 @@ import java.util.Random;
 
 public class Dice {
 
-    private Random _rd;
-
-    public Dice(Random rd) {
-        _rd = rd;
+    public Dice() {
+        private Random _rd = new Random();
     }
     
     public int roll(){
-        return _rd.nextInt(6);
+        return 1+_rd.nextInt(6);
     }
 
 }
