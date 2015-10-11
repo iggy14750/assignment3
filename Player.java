@@ -34,7 +34,6 @@ public class Player {
     }
     
     public void addMoney(double clams){//this may not be necssary...
-        
         if (clams>0){
             _cash+=clams;
         }
