@@ -3,16 +3,13 @@ public class Player {
     private String _fname="Herb";
     private String _lname="Doe";
     private double _cash;
-    /*How can I present a double as a string 
-    with two decimal points?, like %.2f in printf.
-    */
     private int _wins=0;
     private int _totalRounds=0;
     
-    public Player(String lname, String fname, double cash, int totalRounds, int wins){
+    public Player(String fname, String lname, double cash, int totalRounds, int wins){
         
-        _lname = lname;
         _fname = fname;
+        _lname = lname;
         _cash = cash;
         _totalRounds = totalRounds;
         _wins = wins;

@@ -3,7 +3,7 @@ import java.util.Random;
 public class Dice {
 
     public Dice() {
-        private Random _rd = new Random();
+        Random _rd = new Random();
     }
     
     public int roll(){
