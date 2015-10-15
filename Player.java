@@ -1,18 +1,19 @@
 public class Player {
     
-    private String _fname="Herb";
-    private String _lname="Doe";
-    private double _cash;
-    private int _wins=0;
-    private int _totalRounds=0;
-    
-    public Player(String fname, String lname, double cash, int totalRounds, int wins){
+    public Player(String[] playerCred){
         
+        private String _lname = playerCred[0];
+        private String _fname = playerCred[1];
+        private double _cash = Double.parseDouble(playerCred[2]);
+        private int _rounds = playerCred[3].toInt();
+        private int _wins = playerCred[4].toInt();
+        /*
         _fname = fname;
         _lname = lname;
         _cash = cash;
         _totalRounds = totalRounds;
         _wins = wins;
+        */
     }
     
     public double cashLeft(){
@@ -20,7 +21,7 @@ public class Player {
     }
     
     public void wonAGame(double winnings){
-        _totalRounds++;
+        _rounds++;
         _wins++;
         _cash+=winnings;
     }

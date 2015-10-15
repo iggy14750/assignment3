@@ -11,11 +11,34 @@ public class Assig3 {
         //Welcome, and ask who it is
         System.out.println("Hello, and welcome to FOUR Rivers' Casino!\nPlease Enter your name:");
         
-        String given_name = sc.next();
-        
-        
         //create Player with the information we have or asked for
         
+        
+        String given_name = sc.next();
+        String[] playerCred = new String[5];
+        
+        // /*Pseudocode:
+        if (haveEntry(given_name)){
+            readEntry(given_name);
+        } else {
+            makeNewEntry(given_name);
+        }
+        Player pl = new Player(PlayerCred);
+        
+        //*/
+        /*
+        if (haveEntry(given_name)){//This needs to be implemented.
+            String[] credentials = readEntry(given_name);
+            lname = credentials[0];
+            fname = given_name;
+            cash = credentials[2].toDouble();
+            rounds = credentials[3].toInt();
+            wins = credentials[4].toInt();
+        } else {
+            Player schmuk = makeNewEntry(given_name);
+            
+        }
+        //*/
         
         /*Commence play of over/under
             ask to play another round
@@ -25,27 +48,50 @@ public class Assig3 {
         
     }
     
-    public String[] playerDB(string playerName) throws IOException {
+    public static boolean haveEntry(String given_name) throw IOException {
+        File f = new File(give_name);
+        Scanner io = new Scanner(f);
+        return io.hasNext();
+    }
+    
+    public static void readEntry(String playerName, String playerCred[]) throws IOException {
         File f = new File(playerName);
         Scanner io = new Scanner(f);
-        String[] playerCred = new String[5];
         
-        if (io.hasNext()) {//If the file is non-empty
-            for (int i=0;i<5;i++){
-                playerCred[i] = io.next();
-            }
-        } else { //If the file is empty, we're going to create a new entry
-            PrintWriter out = new PrintWriter(playerName);
-            System.out.println("We're happy to greet you at FOUR Rivers' Casino.\nWhat is your last name?");
-            playerCred[0] = sc.next();
-            playerCred[1] = playerName;
-            System.out.println("And how much will you be wagering with us today?");
-            playerCred[2] = sc.next();
-            playerCred[3] = 0;
-            //....... I want to get rid of that array.
+        for (int i=0;i<5;i++){
+            playerCred[i] = io.next();
         }
-        
         io.close();
+    }
+    
+    public static void makeNewEntry(String give_name, String playerCred[]) throws IOException {
+        PrintWriter out = new PrintWriter(playerName);
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("We're happy to greet you at FOUR Rivers' Casino.\nWhat is your last name?");
+        playerCred[0] = sc.next();
+        playerCred[1] = playerName;
+        System.out.println("And how much will you be wagering with us today?");
+        
+        //Check that the player is wagering a non-negative amount
+        do {
+            boolean invalidInput = false;
+            double given_value = sc.nextDouble();//IDK if this is a real method...
+            if (given_value>=0){
+                playerCred[2] = given_input.toString();
+            } else {
+                System.out.println("You have to wager a positive amount of money; try again.");
+                invalidInput = true;
+            }
+        } while (invalidInput);
+        
+        playerCred[3] = "0";
+        playerCred[4] = "0";
+        
+        for (String atom: playerCred) {
+            out.println(atom);
+        }
+        out.close();
     }
     
     private static String randomReply(Dice dc){
