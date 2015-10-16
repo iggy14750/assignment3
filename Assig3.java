@@ -12,33 +12,15 @@ public class Assig3 {
         System.out.println("Hello, and welcome to FOUR Rivers' Casino!\nPlease Enter your name:");
         
         //create Player with the information we have or asked for
-        
-        
         String given_name = sc.next();
-        String[] playerCred = new String[5];
+        Player pl = new Player(given_name);
         
-        // /*Pseudocode:
-        if (haveEntry(given_name)){
-            readEntry(given_name);
-        } else {
-            makeNewEntry(given_name);
+        try {
+            pl.readEntry();
+        } catch (Exception e) {
+            pl.makeNewEntry();
         }
-        Player pl = new Player(PlayerCred);
         
-        //*/
-        /*
-        if (haveEntry(given_name)){//This needs to be implemented.
-            String[] credentials = readEntry(given_name);
-            lname = credentials[0];
-            fname = given_name;
-            cash = credentials[2].toDouble();
-            rounds = credentials[3].toInt();
-            wins = credentials[4].toInt();
-        } else {
-            Player schmuk = makeNewEntry(given_name);
-            
-        }
-        //*/
         
         /*Commence play of over/under
             ask to play another round
@@ -47,13 +29,17 @@ public class Assig3 {
         */
         
     }
-    
+    /*
     public static boolean haveEntry(String given_name) throw IOException {
         File f = new File(give_name);
         Scanner io = new Scanner(f);
-        return io.hasNext();
+        boolean exists = io.hasNext();
+        io.close();
+        return exists;
     }
+    //*/
     
+    /*
     public static void readEntry(String playerName, String playerCred[]) throws IOException {
         File f = new File(playerName);
         Scanner io = new Scanner(f);
@@ -63,7 +49,9 @@ public class Assig3 {
         }
         io.close();
     }
+    //*/
     
+    /*
     public static void makeNewEntry(String give_name, String playerCred[]) throws IOException {
         PrintWriter out = new PrintWriter(playerName);
         Scanner sc = new Scanner(System.in);
@@ -93,6 +81,7 @@ public class Assig3 {
         }
         out.close();
     }
+    //*/
     
     private static String randomReply(Dice dc){
         String[] replies = {"Don't worry; everyone gets a little shy at these things.", "Don't have a seizure on me!", "You kiss your mother with that mouth?", "MY LEG!", "lorem ipsum", "et tu brute?"};
