@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.*;
 public class Player {
     
     private String _lname;
@@ -5,7 +7,7 @@ public class Player {
     private double _cash;
     private int _rounds;
     private int _wins;
-    String[] playerCred = new String[5];
+    //String[] playerCred = new String[5];
     
     public Player(String name){
         
@@ -46,8 +48,8 @@ public class Player {
         System.out.println("And how much will you be wagering with us today?");
         
         //Check that the player is wagering a non-negative amount. I know, it's a little wordy...
+        boolean invalidInput = false;
         do {
-            boolean invalidInput = false;
             double given_value = sc.nextDouble();
             if (given_value>=0.0){
                 _cash = given_value;
@@ -59,6 +61,17 @@ public class Player {
         
         _rounds = 0;
         _wins = 0;
+    }
+    
+    public void save() throws IOException {
+        
+        PrintWriter out = new PrintWriter(_fname);
+        out.println(_lname);
+        out.println(_fname);
+        out.println(Double.toString(_cash));
+        out.println(Integer.toString(_rounds));
+        out.println(Integer.toString(_wins));
+        out.close();
     }
     
     public double cashLeft(){
@@ -74,12 +87,6 @@ public class Player {
     public void lostAGame(double bet){
         _rounds++;
         _cash-=bet;
-    }
-    
-    public void addMoney(double clams){//this may not be necssary...
-        if (clams>0){
-            _cash+=clams;
-        }
     }
     
     public void printInfo(){

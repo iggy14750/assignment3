@@ -3,12 +3,12 @@ import java.io.*;
 public class Assig3 {
 
     public static void main(String[] main) throws IOException{
-        //create Scanner(sysin), and 2 Dice
+        
         Scanner sc = new Scanner(System.in);
         Dice die1 = new Dice();
         Dice die2 = new Dice();
         
-        //Welcome, and ask who it is
+        
         System.out.println("Hello, and welcome to FOUR Rivers' Casino!\nPlease Enter your name:");
         
         //create Player with the information we have or asked for
@@ -28,60 +28,66 @@ public class Assig3 {
             ask for over/under/seven
         */
         
-    }
-    /*
-    public static boolean haveEntry(String given_name) throw IOException {
-        File f = new File(give_name);
-        Scanner io = new Scanner(f);
-        boolean exists = io.hasNext();
-        io.close();
-        return exists;
-    }
-    //*/
-    
-    /*
-    public static void readEntry(String playerName, String playerCred[]) throws IOException {
-        File f = new File(playerName);
-        Scanner io = new Scanner(f);
         
-        for (int i=0;i<5;i++){
-            playerCred[i] = io.next();
-        }
-        io.close();
-    }
-    //*/
-    
-    /*
-    public static void makeNewEntry(String give_name, String playerCred[]) throws IOException {
-        PrintWriter out = new PrintWriter(playerName);
-        Scanner sc = new Scanner(System.in);
-        
-        System.out.println("We're happy to greet you at FOUR Rivers' Casino.\nWhat is your last name?");
-        playerCred[0] = sc.next();
-        playerCred[1] = playerName;
-        System.out.println("And how much will you be wagering with us today?");
-        
-        //Check that the player is wagering a non-negative amount
-        do {
-            boolean invalidInput = false;
-            double given_value = sc.nextDouble();//IDK if this is a real method...
-            if (given_value>=0){
-                playerCred[2] = given_input.toString();
+        do {//Thus begins Over/Under
+            
+            System.out.println("Would you like to play a round of Over/Under? (y/n)>");
+            String YN = sc.next().toLowerCase();
+            if (YN.equals("n")) {
+                System.out.println("Are you sure you don't want to play anymore? (y/n)");
+                if (sc.next().equals("y")) {
+                    break;
+                } else {
+                    continue;
+                }
+            } else if (YN.equals("y")) {
+                //new round
+                do {
+                    System.out.println("How much would you like to wager for this round?");
+                    double wager = sc.nextDouble();
+                    if (wager>pl.cashLeft()) {
+                        System.out.println(randomReply(die1) + "  You can't wager that much!");
+                        System.out.printf("You can only wager $%.2f\n", pl.cashLeft());
+                        
+                    } else {
+                        System.out.println("So, what'll it be, over, under, or seven?");
+                        String guess = sc.next().toLowerCase();
+                        int roll1 = die1.roll();
+                        int roll2 = die2.roll();
+                        int theroll=roll1+roll2;
+                        System.out.printf("Dice 1: %d, Dice 2: %d, Total: %d.\n", roll1, roll2, theroll);
+                        winLose(theroll, guess, wager, pl);
+                    }
+                
+                } while (true);
             } else {
-                System.out.println("You have to wager a positive amount of money; try again.");
-                invalidInput = true;
+                System.out.println(randomReply(die1) + " You gotta type \'y\' or \'n\'.");
+                continue;
             }
-        } while (invalidInput);
-        
-        playerCred[3] = "0";
-        playerCred[4] = "0";
-        
-        for (String atom: playerCred) {
-            out.println(atom);
-        }
-        out.close();
+        } while (true); 
     }
-    //*/
+    
+    private static void winLose(int theroll, String guess, double wager, Player pl) {
+        //Somewhat wordy, but this is a one-line way to cover all win conditions.
+        boolean playerWon = ((wager>7&&guess.equals("over"))||(wager<7&&guess.equals("under"))||(wager==7&&guess.equals("seven")));
+        
+        if (playerWon) {
+            double winnings = wager;
+            if (theroll==7) {
+                winnings*=3;//was that the factor it got multiplied by?
+            }
+            System.out.printf("Congrats! You won $%.2f!\n", winnings);
+            pl.wonAGame(winnings);
+        } else {
+            System.out.printf("Ooh, that's too bad! You lost $%.2f.\n", wager);
+            pl.lostAGame(wager);
+        }
+        System.out.println("You have $%.2f left.", pl.cashLeft());
+        if (pl.cashLeft()==0.) {
+            //game over
+        }
+        pl.save();
+    }
     
     private static String randomReply(Dice dc){
         String[] replies = {"Don't worry; everyone gets a little shy at these things.", "Don't have a seizure on me!", "You kiss your mother with that mouth?", "MY LEG!", "lorem ipsum", "et tu brute?"};
@@ -89,3 +95,10 @@ public class Assig3 {
         return replies[which];
     }
 }
+
+
+
+
+
+
+
