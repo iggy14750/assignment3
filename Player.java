@@ -30,10 +30,9 @@ public class Player {
         }
         //*/
         _lname = in.next();
-        System.out.println("Welcome back to FOUR Rivers Casino, " + _fname + " " + _lname);
-        String throwaway = in.next();
+        System.out.printf("Welcome back to FOUR Rivers Casino, %s %s!\n", _fname, _lname);
+        String throwaway = in.next();//I already know the players first name.
         _cash = Double.parseDouble(in.next());
-        //not too sure what to do about these
         _rounds = in.nextInt();
         _wins = in.nextInt();
         in.close();
@@ -90,7 +89,7 @@ public class Player {
     }
     
     public void printInfo(){
-        System.out.println("Here is your current information:");
+        //System.out.println("Here is your current information:");
         System.out.printf("\tName: %s %s\n\tMoney Left: $%.2f\n\tTotal Rounds Played: %d\n\tTotal Rounds Won: %d\n\n", _fname, _lname, _cash, _rounds, _wins);
     }
 }

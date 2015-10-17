@@ -17,6 +17,7 @@ public class Assig3 {
         
         try {
             pl.readEntry();
+            pl.printInfo();
         } catch (Exception e) {
             pl.makeNewEntry();
         }
@@ -36,30 +37,19 @@ public class Assig3 {
             if (YN.equals("n")) {
                 System.out.println("Are you sure you don't want to play anymore? (y/n)");
                 if (sc.next().equals("y")) {
+                    endGame();
                     break;
-                } else {
-                    continue;
                 }
             } else if (YN.equals("y")) {
                 //new round
-                do {
-                    System.out.println("How much would you like to wager for this round?");
-                    double wager = sc.nextDouble();
-                    if (wager>pl.cashLeft()) {
-                        System.out.println(randomReply(die1) + "  You can't wager that much!");
-                        System.out.printf("You can only wager $%.2f\n", pl.cashLeft());
-                        
-                    } else {
-                        System.out.println("So, what'll it be, over, under, or seven?");
-                        String guess = sc.next().toLowerCase();
-                        int roll1 = die1.roll();
-                        int roll2 = die2.roll();
-                        int theroll=roll1+roll2;
-                        System.out.printf("Dice 1: %d, Dice 2: %d, Total: %d.\n", roll1, roll2, theroll);
-                        winLose(theroll, guess, wager, pl);
-                    }
-                
-                } while (true);
+                double wager = legitWager(sc, pl);
+                System.out.println("So, what'll it be, over, under, or seven?");
+                String guess = sc.next().toLowerCase();
+                int roll1 = die1.roll();
+                int roll2 = die2.roll();
+                int theroll=roll1+roll2;
+                System.out.printf("Dice 1: %d, Dice 2: %d, Total: %d.\n", roll1, roll2, theroll);
+                winLose(theroll, guess, wager, pl);
             } else {
                 System.out.println(randomReply(die1) + " You gotta type \'y\' or \'n\'.");
                 continue;
@@ -67,9 +57,23 @@ public class Assig3 {
         } while (true); 
     }
     
-    private static void winLose(int theroll, String guess, double wager, Player pl) {
+    private static double legitWager(Scanner sc, Player pl) {
+        do {
+            System.out.println("How much would you like to wager for this round?");
+            double wager = sc.nextDouble();
+            if (wager>pl.cashLeft()) {
+                System.out.println("You can't wager that much!");
+                System.out.printf("You can only wager $%.2f\n", pl.cashLeft());
+            } else {
+                return wager;
+            }
+            
+        } while (true);
+    }
+    
+    private static void winLose(int theroll, String guess, double wager, Player pl) throws IOException {
         //Somewhat wordy, but this is a one-line way to cover all win conditions.
-        boolean playerWon = ((wager>7&&guess.equals("over"))||(wager<7&&guess.equals("under"))||(wager==7&&guess.equals("seven")));
+        boolean playerWon = ((theroll>7&&guess.equals("over"))||(theroll<7&&guess.equals("under"))||(theroll==7&&guess.equals("seven")));
         
         if (playerWon) {
             double winnings = wager;
@@ -82,7 +86,7 @@ public class Assig3 {
             System.out.printf("Ooh, that's too bad! You lost $%.2f.\n", wager);
             pl.lostAGame(wager);
         }
-        System.out.println("You have $%.2f left.", pl.cashLeft());
+        System.out.printf("You have $%.2f left.\n", pl.cashLeft());
         if (pl.cashLeft()==0.) {
             //game over
         }
