@@ -4,7 +4,7 @@ public class Player {
     
     private String _lname;
     private String _fname;
-    private double _cash;
+    private double _cash=0.0;
     private int _rounds;
     private int _wins;
     //String[] playerCred = new String[5];
@@ -44,22 +44,24 @@ public class Player {
         
         System.out.println("We're happy to greet you at FOUR Rivers' Casino.\nWhat is your last name?");
         _lname = sc.next();
-        System.out.println("And how much will you be wagering with us today?");
-        
+        _rounds = 0;
+        _wins = 0;
+    }
+    
+    public void addMoney(Scanner sc) {
+        System.out.println("And how much would you like to add to your account today?");
         //Check that the player is wagering a non-negative amount. I know, it's a little wordy...
         boolean invalidInput = false;
         do {
             double given_value = sc.nextDouble();
             if (given_value>=0.0){
-                _cash = given_value;
+                _cash += given_value;
+                invalidInput = false;
             } else {
                 System.out.println("You have to wager a positive amount of money; try again.");
                 invalidInput = true;
             }
         } while (invalidInput);
-        
-        _rounds = 0;
-        _wins = 0;
     }
     
     public void save() throws IOException {

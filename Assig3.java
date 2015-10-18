@@ -2,6 +2,8 @@ import java.util.*;
 import java.io.*;
 public class Assig3 {
 
+    static boolean gameOver = false;
+
     public static void main(String[] main) throws IOException{
         
         Scanner sc = new Scanner(System.in);
@@ -17,11 +19,14 @@ public class Assig3 {
         
         try {
             pl.readEntry();
-            pl.printInfo();
         } catch (Exception e) {
             pl.makeNewEntry();
         }
-        
+        pl.printInfo();
+        System.out.println("Would you like to add any more money to your account?");
+        if (getYN(sc)) {
+            pl.addMoney(sc);
+        }
         
         /*Commence play of over/under
             ask to play another round
@@ -32,33 +37,29 @@ public class Assig3 {
         
         do {//Thus begins Over/Under
             
-            System.out.println("Would you like to play a round of Over/Under? (y/n)>");
-            String YN = sc.next().toLowerCase();
-            if (YN.equals("n")) {
-                System.out.println("Are you sure you don't want to play anymore? (y/n)");
-                if (sc.next().equals("y")) {
-                    endGame();
-                    break;
-                }
-            } else if (YN.equals("y")) {
+            System.out.println("Would you like to play a round of Over/Under?");
+            if (getYN(sc)) {
                 //new round
                 double wager = legitWager(sc, pl);
                 System.out.println("So, what'll it be, over, under, or seven?");
-                String guess = sc.next().toLowerCase();
+                String guess = legitGuess(sc);
                 int roll1 = die1.roll();
                 int roll2 = die2.roll();
                 int theroll=roll1+roll2;
                 System.out.printf("Dice 1: %d, Dice 2: %d, Total: %d.\n", roll1, roll2, theroll);
                 winLose(theroll, guess, wager, pl);
+                broke(pl,sc);
             } else {
-                System.out.println(randomReply(die1) + " You gotta type \'y\' or \'n\'.");
-                continue;
+                System.out.println("Are you sure you don't want to play anymore?");
+                if (getYN(sc)) {
+                    gameOver=true;
+                }
             }
-        } while (true); 
+        } while (!gameOver); 
     }
     
     private static double legitWager(Scanner sc, Player pl) {
-        do {
+        do { //This is where I check that the player isn't trying to bet more than she has.
             System.out.println("How much would you like to wager for this round?");
             double wager = sc.nextDouble();
             if (wager>pl.cashLeft()) {
@@ -87,11 +88,46 @@ public class Assig3 {
             pl.lostAGame(wager);
         }
         System.out.printf("You have $%.2f left.\n", pl.cashLeft());
-        if (pl.cashLeft()==0.) {
-            //game over
-        }
         pl.save();
     }
+    
+    public static void broke(Player pl, Scanner sc) {
+        if (pl.cashLeft()==0.) {
+            System.out.println("Oh, no! You're out of money!\n Would you like to fork ov- I mean - add any more money to your account?");
+            if (getYN(sc)) {
+                pl.addMoney(sc);
+            } else {
+                gameOver = true;
+            }
+        } else {
+            String easterEgg = "I am an Easter Egg. Love me.";
+        }
+    }
+    
+    public static String legitGuess(Scanner sc) {
+        do {
+            String guess = sc.next().toLowerCase();
+            if (guess.equals("over")||guess.equals("under")||guess.equals("seven")) {
+                return guess;
+            } else {
+                System.out.println("Oops! You have to pick between over, under, or seven.");
+            }
+        } while (true);
+    }
+    
+    public static boolean getYN(Scanner sc) {
+        do {
+            System.out.print("(y/n) >");
+            String YN = sc.next().toLowerCase();
+            if (YN.equals("y")){
+                return true;
+            } else if (YN.equals("n")){
+                return false;
+            } else {
+                System.out.println("Well, which is it?");
+            }
+        } while (true);
+    } 
     
     private static String randomReply(Dice dc){
         String[] replies = {"Don't worry; everyone gets a little shy at these things.", "Don't have a seizure on me!", "You kiss your mother with that mouth?", "MY LEG!", "lorem ipsum", "et tu brute?"};
